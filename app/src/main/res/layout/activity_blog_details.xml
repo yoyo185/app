@@ -12,7 +12,8 @@
         tools:src="@drawable/sydney"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="TODO" />
 
     <TextView
         android:id="@+id/textDate"
@@ -61,6 +62,7 @@
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
         android:scaleType="centerCrop"
         tools:src="@drawable/p1"
@@ -83,6 +85,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
         android:isIndicator="true"
         android:numStars="5"
         tools:rating="4.4"
@@ -96,6 +99,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
+        android:layout_marginLeft="4dp"
         tools:text="4.4"
         app:layout_constraintBottom_toBottomOf="@id/ratingBar"
         app:layout_constraintStart_toEndOf="@id/ratingBar"
@@ -106,6 +110,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
+        android:layout_marginLeft="4dp"
         tools:text="(2687 Views)"
         android:textColor="@color/grey500"
         app:layout_constraintBottom_toBottomOf="@id/ratingBar"

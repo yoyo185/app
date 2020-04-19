@@ -24,7 +24,7 @@ public class BlogDetailsActivity extends AppCompatActivity{
     @Override
     protected void onCreate(@Nullable Bundle saveInstanceState){
         super.onCreate(saveInstanceState);
-        setContentView(R.layout.activtiy_blog_details);
+        setContentView(R.layout.activity_blog_details);
 
         ImageView imageMain = findViewById(R.id.imageMain);
 //        imageMain.setImageResource(R.drawable.Sydney);
