@@ -1,5 +1,6 @@
 package com.example.mytravelapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -14,5 +15,7 @@ public class MainActivity extends AppCompatActivity {
 
         TextView mainTextView = findViewById(R.id.mainTextView);
         mainTextView.setText("Hello educative");
+
+        startActivity(new Intent(this,BlogDetailsActivity.class));
     }
 }

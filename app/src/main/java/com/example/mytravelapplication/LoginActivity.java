@@ -20,10 +20,18 @@ public class LoginActivity extends AppCompatActivity {
     private TextInputLayout textPasswordInput;
     private Button loginButton;
     private ProgressBar progressBar;
+    private BlogPreferences preferences;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        preferences = new BlogPreferences(this);
+        if (preferences.isLoggedIn()){
+            startMainActivity();
+            finish();
+            return;
+        }
         setContentView(R.layout.activity_login);
 
         textUsernameLayout = findViewById(R.id.textUsernameLayout);
@@ -36,14 +44,15 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         textUsernameLayout
-            .getEditText()
-            .addTextChangedListener(createTextWatcher(textUsernameLayout));
+                .getEditText()
+                .addTextChangedListener(createTextWatcher(textUsernameLayout));
         textPasswordInput
-            .getEditText()
-             .addTextChangedListener(createTextWatcher(textPasswordInput));
+                .getEditText()
+                .addTextChangedListener(createTextWatcher(textPasswordInput));
         progressBar = findViewById(R.id.progressBar);
     }
     private void performLogin(){
+        preferences.setLoggedIn(true);
         textUsernameLayout.setEnabled(false);
         textPasswordInput.setEnabled(false);
         loginButton.setVisibility(View.INVISIBLE);
@@ -80,7 +89,7 @@ public class LoginActivity extends AppCompatActivity {
                 .setPositiveButton("OK", (dialog, which) -> dialog.dismiss()).show();
 //                .show();
     }
-    private TextWatcher createTextWatcher(TextInputLayout textPasswordInput) {
+    private TextWatcher createTextWatcher(TextInputLayout textInput) {
         return new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -89,7 +98,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                textPasswordInput.setError(null);
+                textInput.setError(null);
             }
 
             @Override
