@@ -45,7 +45,7 @@ public class BlogDetailsActivity extends AppCompatActivity{
         imageBack.setOnClickListener(v -> finish());
 
         TextView textTitle = findViewById(R.id.textTitle);
-        textTitle.setText("G'day from Sydney");
+        textTitle.setText("G'day from sydney");
 
         TextView textDate = findViewById(R.id.textDate);
         textDate.setText("August 2, 2019");
