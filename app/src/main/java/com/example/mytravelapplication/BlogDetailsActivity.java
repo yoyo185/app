@@ -1,7 +1,10 @@
 package com.example.mytravelapplication;
 
 import android.os.Bundle;
+import android.text.Html;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -11,58 +14,95 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.example.mytravelapplication.http.Blog;
+import com.example.mytravelapplication.http.BlogArticlesCallback;
+import com.example.mytravelapplication.http.BlogHttpClient;
+import com.google.android.material.snackbar.Snackbar;
+
+import java.util.List;
 
 
 public class BlogDetailsActivity extends AppCompatActivity{
-    public static final String IMAGE_URL =
-            "https://bitbucket.org/dmytrodanylyk/travel-blog-resources/raw/" +
-                    "3436e16367c8ec2312a0644bebd2694d484eb047/images/sydney_image.jpg";
-    public static final String AVATAR_URL =
-            "https://bitbucket.org/dmytrodanylyk/travel-blog-resources/raw/" +
-                    "3436e16367c8ec2312a0644bebd2694d484eb047/avatars/avatar1.jpg";
+    private TextView textTitle;
+    private TextView textDate;
+    private TextView textAuthor;
+    private TextView textRating;
+    private TextView textDescription;
+    private TextView textViews;
+    private RatingBar ratingBar;
+    private ImageView imageAvatar;
+    private ImageView imageMain;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(@Nullable Bundle saveInstanceState){
         super.onCreate(saveInstanceState);
-        setContentView(R.layout.activity_blog_details);
+        setContentView(R.layout.activity_main);
+//        setContentView(R.layout.activity_blog_details);
+//
+//        imageMain = findViewById(R.id.imageMain);
+//        imageAvatar = findViewById(R.id.imageAvatar);
+//
+//
+//        ImageView imageBack = findViewById(R.id.imageBack);
+//        imageBack.setOnClickListener(v -> finish());
+//
+//        textTitle = findViewById(R.id.textTitle);
+//        textDate = findViewById(R.id.textDate);
+//        textAuthor = findViewById(R.id.textAuthor);
+//        textRating = findViewById(R.id.textRating);
+//        textViews = findViewById(R.id.textViews);
+//        textDescription = findViewById(R.id.textDescription);
+//        ratingBar = findViewById(R.id.ratingBar);
+//
+//        progressBar = findViewById(R.id.progressBar);
+        // start data loading
+        loadData();
+    }
 
-        ImageView imageMain = findViewById(R.id.imageMain);
-//        imageMain.setImageResource(R.drawable.Sydney);
+    private void loadData() {
+        BlogHttpClient.INSTANCE.loadBlogArticles(new BlogArticlesCallback(){
+            @Override
+            public void onSuccess(List<Blog> blogList){
+                runOnUiThread(() -> showData(blogList.get(0)));
+
+            }
+            @Override
+            public void onError(){
+                runOnUiThread(() -> showErrorSnackbar());
+            }
+        });
+    }
+
+    private void showErrorSnackbar() {
+        View rootView = findViewById(android.R.id.content);
+        Snackbar snackbar = Snackbar.make(rootView,"Error during loading blog articles", Snackbar.LENGTH_INDEFINITE);
+        snackbar.setActionTextColor(getResources().getColor(R.color.orange500));
+        snackbar.setAction("Retry", v -> {
+            loadData();
+            snackbar.dismiss();
+        });
+        snackbar.show();
+    }
+
+    private void showData(Blog blog){
+        progressBar.setVisibility(View.GONE);
+        textTitle.setText(blog.getTitle());
+        textDate.setText(blog.getDate());
+        textAuthor.setText(blog.getAuthor().getName());
+        textRating.setText(String.valueOf(blog.getRating()));
+        textViews.setText(String.format("(%d views)",blog.getViews()));
+        textDescription.setText(Html.fromHtml(blog.getDescription()));
+        ratingBar.setRating(blog.getRating());
+
         Glide.with(this)
-                .load(IMAGE_URL)
+                .load(blog.getImage())
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(imageMain);
-
-        ImageView imageAvatar = findViewById(R.id.imageAvatar);
-//        imageAvatar.setImageResource(R.drawable.p1);
         Glide.with(this)
-                .load(AVATAR_URL)
+                .load(blog.getAuthor().getAvatar())
                 .transform(new CircleCrop())
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(imageAvatar);
-
-        ImageView imageBack = findViewById(R.id.imageBack);
-        imageBack.setOnClickListener(v -> finish());
-
-        TextView textTitle = findViewById(R.id.textTitle);
-        textTitle.setText("G'day from sydney");
-
-        TextView textDate = findViewById(R.id.textDate);
-        textDate.setText("August 2, 2019");
-
-        TextView textAuthor = findViewById(R.id.textAuthor);
-        textAuthor.setText("Grayson Wells");
-
-        TextView textRating = findViewById(R.id.textRating);
-        textRating.setText("4.4");
-
-        TextView textViews = findViewById(R.id.textViews);
-        textViews.setText("(2678 views)");
-
-        TextView textDescription = findViewById(R.id.textDescription);
-        textDescription.setText("Australia is one of the most popular travel destinations in the world.");
-
-        RatingBar ratingBar = findViewById(R.id.ratingBar);
-        ratingBar.setRating(4.4f);
     }
 }
