@@ -50,9 +50,6 @@ public class MainAdapter extends ListAdapter<Blog,MainAdapter.MainViewHolder> {
         holder.bindTo(getItem(position));
     }
 
-    public void submitList(List<Blog> blogList) {
-    }
-
     static class MainViewHolder extends RecyclerView.ViewHolder {
         private TextView textTitle;
         private TextView textDate;
