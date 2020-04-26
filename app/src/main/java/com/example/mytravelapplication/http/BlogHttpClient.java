@@ -45,6 +45,7 @@ public final class BlogHttpClient {
                     BlogData blogData = gson.fromJson(json,BlogData.class);
                     if (blogData!=null){
                         callback.onSuccess(blogData.getData());
+                        return;
                     }
                 }
             }catch(IOException e){
