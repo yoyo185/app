@@ -1,9 +1,16 @@
 package com.example.mytravelapplication.http;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Objects;
 
+@Entity
 public class Blog {
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM dd, yyyy");
+    @PrimaryKey
     private String id;
+    @Embedded
     private Author author;
     private String title;
     private String date;
@@ -12,11 +19,31 @@ public class Blog {
     private int views;
     private float rating;
 
+    public Blog(int id, Author author, String title, String date, String image, String description,
+                int views, float rating){
+        this.id = id;
+        this.author = author;
+        this.title = title;
+        this.date = date;
+        this.image = image;
+        this.description = description;
+        this.views = views;
+        this.rating = rating;
+    }
     public String getTitle(){
         return title;
     }
     public String getDate(){
         return date;
+    }
+    public Long getDateMillis(){
+        try{
+            Date date = dateFormat.parse(getDate());
+            return date !=null?date.getTime():null;
+        }catch(ParseException e){
+            e.printStackTrace();
+        }
+        return null;
     }
     public String getImage(){
         return image;
